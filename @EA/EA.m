@@ -7,7 +7,7 @@ function [ea] = EA(problem, algo, varargin)
 	% Problem related info
 	ea.prob_name = '';				% problem string
 	ea.prob = [];					% Problem data structure
-	ea.analysis = [];				% Analysis class
+	ea.analysis = [];				% Analysis informaton
 
 	% Algorithm related info
 	ea.algo_name = '';
@@ -50,25 +50,56 @@ function [ea] = EA(problem, algo, varargin)
 	
 		% Set problem information
 		if isa(problem, 'struct')
-			p_field = {'nx', 'nf', 'ng', 'range', 'name', 'analysis'};
+			p_field = {'name', 'analysis'};
 			for i = 1:length(p_field)
 				assert(isfield(problem, p_field{i}), ...
 						'Problem missing information (%s)', p_field{i});
 			end
-			
 			ea.prob_name = problem.name;
-			ea.analysis = problem.analysis;
 			prob = problem;
 		else
 			if isa(problem, 'function_handle')
 				ea.prob_name = strrep(func2str(config), '/', '__');
-				ea.analysis = problem;
 			else
 				ea.prob_name = problem;
-				ea.analysis = str2func(problem);
 			end
-			prob = feval(ea.analysis);
+			prob = feval(problem);
 		end
+		
+		% Check for required fields
+		p_field = {'nx', 'nf', 'ng', 'range', 'analysis'};
+		for i = 1:length(p_field)
+			assert(isfield(prob, p_field{i}), ...
+					'Problem missing information (%s)', p_field{i});
+		end
+		
+		if isstruct(prob.analysis)
+			assert(isfield(prob.analysis, 'obj'), ...
+					'analysis missing obj');
+			assert(iscell(prob.analysis.obj), ...
+					'analysis.obj must be a cell array');
+			assert(length(prob.analysis.obj) == prob.nf, ...
+					'analysis.obj must have %d function handles', prob.nf);
+				
+			assert(isfield(prob.analysis, 'constr'), ...
+					'analysis missing constr');
+			assert(iscell(prob.analysis.constr), ...
+					'analysis.constr must be a cell array');
+			assert(length(prob.analysis.constr) == prob.ng, ...
+					'analysis.constr must have %d function handles', prob.ng);
+				
+			ea.analysis = prob.analysis;
+			ea.analysis.type = 'single';
+			ea.fn_evals = zeros(1, prob.nf+prob.ng); 
+		else
+			assert(isa(prob.analysis, 'function_handle'), ...
+					'analysis must be a function handle or a structure');
+			ea.analysis.func = prob.analysis;
+			ea.analysis.type = 'composite';
+			ea.fn_evals = 0;
+		end
+		
+		% Check for optional fields
 		if ~isfield(prob, 'class')
 			prob.class = 'Numeric';
 		end
