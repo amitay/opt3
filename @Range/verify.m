@@ -34,11 +34,13 @@ function verify(range, value, varname)
 			for i = 1:length(value)
 				if ischar(value{i})
 					vout = value{i};
+					assert(ismember(vout, range.val), ...
+						'%s value (%s) not in the set', varname, vout);
 				else
 					vout = sprintf('%g', value{i});
+					assert(ismember(vout, range.val), ...
+						'%s value (%g) not in the set', varname, vout);
 				end
-				assert(ismember(value{i}, range.val), ...
-					'%s value (%g) not in the set', varname, vout);
 			end
 	end
 end
