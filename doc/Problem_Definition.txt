@@ -17,17 +17,13 @@ Matlab problem definition
 The generic structure of the matlab file for problem definition is as follows:
 
   % -------------------------------------------------------------------
-   function [f, g, x] = problem(x, state)
-     if nargin == 0
+   function [prob] = problem()
         prob.nx = <number of design variables>;
         prob.nf = <number of objectives>;
         prob.ng = <number of constraints>;
         prob.range = cell(1, prob.nx);
         prob.range{1} = Range( <range description> ) 
-        f = prob;
-     else
-        [f, g] = problem_true(x, state);
-     end
+	prob.analysis = @problem_true;
    end
 
    function [f, g] = problem_true(x, state)
@@ -36,15 +32,16 @@ The generic structure of the matlab file for problem definition is as follows:
    end
   % -------------------------------------------------------------------
 
-The function returns the structure 'prob' when called without any arguments.
+The function returns the structure 'prob' that defines an optimization problem.
 This structure should have following fields.
 
   o nx - number of design variables
   o nf - number of objectives
   o ng - number of constraints
   o range - cell array of size nx, each cell having the range for a variable
+  o analysis - the function to use for evaluating objectives and constraints
 
-The function 'problem_true' evaluates objectives (f) and constraints (g)
+Analysis function 'problem_true' evaluates objectives (f) and constraints (g)
 corresponding to a given design (x). 
   - The size of f should be nf
   - The size of g should be ng
@@ -70,6 +67,56 @@ The variable range can be defined as any one of the following
     To define a set of values (1, 3, 6, 9)
 
        range{1} = Range('set', {1, 3, 6, 9});
+
+
+Defining Analysis
+-----------------
+Analysis function can be of two types:
+
+ o composite - a function evaluating all objectives and constraints
+
+   A composite function is defined as follows:
+
+     function [f, g, x] = composite_analysis(x, state)
+       ...
+     end
+
+   In problem definition this is defined as:
+
+     prob.analysis = @composite_analysis;
+
+ o single - a set of functions, one for each objective and constraint
+
+   Define multiple functions for evaluating single objective and constraint
+
+     function [f1] = single_analysis_f1(x, state)
+       ...
+     end
+
+     function [g1] = single_analysis_g1(x, state)
+       ...
+     end
+
+     function [g2] = single_analysis_g2(x, state)
+       ...
+     end
+
+  In problem definition this is defined as:
+
+    prob.analysis.obj = { @single_analysis_f1 };
+    prob.analysis.constr = { @single_analysis_g1 @single_analysis_g2 };
+
+  The 'single' type of analysis method is used when surrogate models
+  are built for only few responses. To specify responses that should be
+  approximated using surrogate models, use eval_mask.
+
+  Example:
+    Build surrogate models for f_1, g_2, and g_5. Constraints g_1,
+    g_3 and g_4 are always evaluated.
+
+    prob.nf = 1;
+    prob.ng = 5;
+    prob.eval_mask = [ 1 0 1 0 0 1 ];
 
 
 State data
@@ -172,8 +219,7 @@ the circle using userdata.
 The code for this example is as follows.
 
   % -----------------------------------------------------------------------
-  function [f, g, x] = shape_matching(x, state)
-    if nargin == 0
+  function [prob] = shape_matching()
       prob.nx = 20;
       prob.nf = 1;
       prob.ng = 0;
@@ -192,11 +238,7 @@ The code for this example is as follows.
       prob.userdata = pts;
       prob.repair_func = @shape_repair;
       prob.plot_func = @shape_plot;
-      
-      f = prob;
-    else
-      [f, g] = shape_matching_true(x, state);
-    end
+      prob.analysis = @shape_matching_true;
   end
 
   function [f, g] = shape_matching_true(x, state)
