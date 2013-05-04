@@ -97,11 +97,11 @@ function [ea] = EA(problem, algo, varargin)
 		for i = 1:length(f_handle)
 			assert(isfield(algo_info, f_handle{i}), ...
 				'%s: Function handle %s not defined', algo, f_handle{i});
-			ea.algo_param_func = algo_info.param_func;
-			ea.algo_init_func = algo_info.init_func;
-			ea.algo_next_func = algo_info.next_func;
-			ea.algo_post_func = algo_info.post_func;
 		end
+        ea.algo_param_func = algo_info.param_func;
+        ea.algo_init_func = algo_info.init_func;
+        ea.algo_next_func = algo_info.next_func;
+        ea.algo_post_func = algo_info.post_func;
 		
 		% Load parameters
 		if nargin == 3
