@@ -8,18 +8,26 @@ function [ea, pop] = eval_pop(ea, pop, varargin)
 		id = 1:pop.size;
 	end
 	
-	% Evaluate population
 	fn_evals = 0;
 
+	if strcmp(ea.analysis.type, 'composite')
+		f_mask = [];
+		g_mask = [];
+	else
+		f_mask = zeros(1, ea.prob.nf);
+		g_mask = zeros(1, ea.prob.ng);
+	end
+	
 	state = [];
 	state.gen_id = ea.gen_id;
 	state.userdata = ea.prob.userdata;
 
+	% Evaluate population
 	for i = id 
 		state.pop_id = i;
 		if get_evalflag(pop, i) ~= 1
 			x = get_x(pop, i);
-			[ea, x, f, g] = eval_cache(ea, x, 1, state);
+			[ea, x, f, g] = eval_cache(ea, x, 1, state, f_mask, g_mask);
 			pop = set_x(pop, i, x);
 			pop = assign_fitness(pop, i, f, g);
 			pop = set_evalflag(pop, i, 1);
