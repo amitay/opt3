@@ -33,6 +33,7 @@ end
 function [ea] = saea_init(ea, varargin)
 	surr = Surrogate(ea.param_value);
 	surr = set_range(surr, ea.prob.range);
+	surr = set_mask(surr, ea.prob.eval_mask);
 	ea.algo_data.surr = surr;
 	
 	ea.pop = Population(ea.object, 0, ea.prob);
