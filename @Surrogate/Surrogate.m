@@ -38,6 +38,7 @@ function [surr] = Surrogate(varargin)
 	surr.y = [];
 	surr.nx = 0;
 	surr.ny = 0;
+	surr.ids = [];
 	surr.count = 0;
 	surr.logger = [];
 

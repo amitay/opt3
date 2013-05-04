@@ -24,14 +24,23 @@ function [model_data] = train_cluster(surr, k)
 		t_ids = ids(cdata.centroid);
 		v_ids = setdiff(ids, t_ids);
 
+		if isempty(surr.ids)
+			ids = 1:surr.ny;
+		else
+			ids = surr.ids;
+		end
+		n_ids = length(ids);
+		
 		% for each response
 		csdata =[];
-		csdata.type = cell(1,surr.ny);
-		csdata.model = cell(1,surr.ny);
-		csdata.error = inf * ones(1,surr.ny);
-		for j = 1:surr.ny
+		csdata.type = cell(1,n_ids);
+		csdata.model = cell(1,n_ids);
+		csdata.error = inf * ones(1,n_ids);
+				
+		for j = 1:n_ids
+			r_id = ids(j);
 			[csdata.type{j}, csdata.model{j}, csdata.error(j)] = ...
-							train_model(surr, t_ids, v_ids, j, k);
+							train_model(surr, t_ids, v_ids, r_id, k);
 			if isinf(csdata.error(j))
 				break
 			end
