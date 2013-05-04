@@ -115,6 +115,9 @@ function [ea] = EA(problem, algo, varargin)
 		if ~isfield(prob, 'convergnce_func')
 			prob.convergence_func = [];
 		end
+		if ~isfield(prob, 'eval_mask')
+			prob.eval_mask = [];
+		end
 		ea.prob = prob;
 
 		% Set algorithm information
