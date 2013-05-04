@@ -5,7 +5,9 @@ function summary(ea)
 	mesg = '';
 
 	summary(ea.pop, ea.logger);
-	write(ea.logger, '\tFunction Evals: %d\n', ea.fn_evals);
+	write(ea.logger, '\tFunction Evals:');
+	write(ea.logger, ' %d', ea.fn_evals);
+	write(ea.logger, '\n');
 	if ea.param.use_cache == 1
 		write(ea.logger, '\tCache Hits: %d\n', ea.cache_hits);
 	end

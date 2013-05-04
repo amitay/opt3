@@ -9,5 +9,5 @@ function [ea] = update_stats(ea)
 		ea.best.g(ea.gen_id,:) = get_g(ea.pop, id);
 	end
 	ea.best.feas(ea.gen_id) = get_feasflag(ea.pop, id);
-	ea.best.fn_evals(ea.gen_id) = ea.fn_evals;
+	ea.best.fn_evals(ea.gen_id, :) = ea.fn_evals;
 end

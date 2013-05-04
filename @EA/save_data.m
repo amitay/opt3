@@ -6,7 +6,9 @@ function [ea] = save_data(ea)
 	
 	% save best 
 	gen = ea.gen_id;
-	fprintf(ea.ofd_best, '%4d %5d %2d ', gen, ea.best.fn_evals(gen), ea.best.feas(gen));
+	fprintf(ea.ofd_best, '%4d', gen);
+	fprintf(ea.ofd_best, ' %5d', ea.best.fn_evals(gen));
+	fprintf(ea.ofd_best, ' %2d', ea.best.feas(gen));
 	fprintf(ea.ofd_best, ' %g', ea.best.f(gen,:));
 	if ea.prob.ng > 0
 		fprintf(ea.ofd_best, ' %g', ea.best.g(gen,:));

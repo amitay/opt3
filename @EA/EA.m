@@ -27,7 +27,7 @@ function [ea] = EA(problem, algo, varargin)
 	ea.algo_data = [];
 	ea.pop = [];
 	ea.childpop = [];
-	ea.fn_evals = 0;
+	ea.fn_evals = [];
 	
 	% Representation related info
 	ea.object = [];
