@@ -1,0 +1,233 @@
+This document describes how to write matlab problem definition for use in 
+evolutionary optimization framework. 
+
+
+Optimization problem
+--------------------
+The generic optimization problem definition can be written as follows:
+
+   Find x_1, x_2, ... 
+   To minimize f_1, f_2, ... 
+   Subject to g_1 >= 0, g_2 >= 0, ...
+
+
+Matlab problem definition
+-------------------------
+
+The generic structure of the matlab file for problem definition is as follows:
+
+  % -------------------------------------------------------------------
+   function [f, g, x] = problem(x, state)
+     if nargin == 0
+        prob.nx = <number of design variables>;
+        prob.nf = <number of objectives>;
+        prob.ng = <number of constraints>;
+        prob.range = cell(1, prob.nx);
+        prob.range{1} = Range( <range description> ) 
+        f = prob;
+     else
+        [f, g] = problem_true(x, state);
+     end
+   end
+
+   function [f, g] = problem_true(x, state)
+     f = ...
+     g = ...
+   end
+  % -------------------------------------------------------------------
+
+The function returns the structure 'prob' when called without any arguments.
+This structure should have following fields.
+
+  o nx - number of design variables
+  o nf - number of objectives
+  o ng - number of constraints
+  o range - cell array of size nx, each cell having the range for a variable
+
+The function 'problem_true' evaluates objectives (f) and constraints (g)
+corresponding to a given design (x). 
+  - The size of f should be nf
+  - The size of g should be ng
+
+
+Defining Variable Range
+-----------------------
+The variable range can be defined as any one of the following
+  o range - Range of real numbers 
+
+    To define a range of real values between -10 and 10, 
+
+       range{1} = Range('range', [-10, 10]);
+
+  o irange - Range of integers
+ 
+    To define a range of integer values between 10 and 20,
+ 
+       range{1} = Range('irange', [10, 20]);
+
+  o set - A set of values
+
+    To define a set of values (1, 3, 6, 9)
+
+       range{1} = Range('set', {1, 3, 6, 9});
+
+
+State data
+----------
+The evolutionary algorithm state information is available during the 
+execution of evaluation function.
+
+   state.gen_id - generation number
+   state.pop_id - id of the solution in population
+
+
+User defined data
+-----------------
+In case additional data is required in the calculation of the objectives
+and the constraints, the additional data can be defined in the problem
+definition.
+
+  To use the data stored in 2 files, the data is loaded initially and
+  assigned in the problem definition as follows:
+
+     ...
+     data1 = load(datafile1);
+     data2 = load(datafile2);
+     userdata.data1 = data1;
+     userdata.data2 = data2;
+     prob.userdata = userdata;
+
+  This data is available as part of the state variable passed as an argument.
+
+     userdata = state.userdata;    
+ 
+
+User defined repair function
+----------------------------
+Repair function is used to modify (or repair) the solution. There are two
+places a solution can be repaired. 
+
+ 1. After evaluation of the solution
+
+    This can be done by writing the 'problem_true' function as follows. 
+    xnew is the new solution updated after evaluating x.
+
+       function [f, g, xnew] = problem_true(x, state)
+        ...
+       end
+
+ 2. Before evaluation of the solution
+
+    This can be done by supplying user defined repair_func as follows and
+    providing it in problem definition structure. 
+
+       function [f, g, x] = problem(x, state)
+           ... 
+          prob.repair_func = @repair_func;
+           ...
+       end
+
+       function [xnew] = repair_func(x, state)
+        ...
+       end
+
+
+User defined plot function
+--------------------------
+To visualize the solution, user defined plot function can be provided.
+
+       function [f, g, x] = problem(x, state)
+           ... 
+          prob.plot_func = @plot_func;
+           ...
+       end
+
+       function plot_func(x, state)
+        ...
+       end
+
+
+Example
+-------
+This example is to match the shape of a circle (with radius = 2) using a 
+polygon with 10 points.  The problem has 20 design variables corresponding 
+to x and y coordinates of 10 points. The range of coordinates is between 
+-5 and 5. 
+
+Objective function to be minimized, has two components
+ 1. Difference between the radius and distance between point and centre
+ 2. Difference between the circumference of circle and polygon
+
+There are no constraints. 
+
+User defined data stores 200 points on the circle used to draw the shape
+in relation to the circle. 
+
+User defined repair function orders points such that they form a closed
+shape without any edges crossing. 
+
+User defined plot function plots the best shape in the generation and
+the circle using userdata.
+
+The code for this example is as follows.
+
+  % -----------------------------------------------------------------------
+  function [f, g, x] = shape_matching(x, state)
+    if nargin == 0
+      prob.nx = 20;
+      prob.nf = 1;
+      prob.ng = 0;
+      prob.range = cell(1, prob.nx);
+      for i = 1:prob.nx
+        prob.range{i} = Range('range', [-5, 5]);
+      end
+      
+      N = 200;
+      pts = zeros(N, 2);
+      angle = (1:N) * 360 / N;
+      for i = 1:N
+        pts(i,1) = 2 * cos(deg2rad(angle(i)));
+        pts(i,2) = 2 * sin(deg2rad(angle(i)));
+      end
+      prob.userdata = pts;
+      prob.repair_func = @shape_repair;
+      prob.plot_func = @shape_plot;
+      
+      f = prob;
+    else
+      [f, g] = shape_matching_true(x, state);
+    end
+  end
+
+  function [f, g] = shape_matching_true(x, state)
+    xx = reshape(x, 10, 2);
+    dist = norm(sum(xx .* xx, 2) - 2*2);
+    tmp = xx(1:9, :) - xx(2:10, :);
+    dist2 = abs(sum(sum(tmp .* tmp, 2)) - 2*pi*2);
+    f = dist + dist2;
+    g = [];
+  end
+
+  function [x] = shape_repair(x, state)
+    xx = reshape(x, 10, 2);
+    centroid = mean(xx);
+    yy = xx - repmat(centroid, 10, 1);
+    for i = 1:10
+      angle(i) = atan2(yy(i,2), yy(i,1));
+    end
+    [tmp, I] = sort(angle);
+    xx = xx(I,:);
+    x = xx(:);
+  end
+
+  function [x] = shape_plot(x, state, fig_id)
+    figure(fig_id);
+    plot(state.userdata([1:end 1], 1), state.userdata([1:end 1], 2), 'k-');
+    hold on;
+    xx = reshape(x, 10, 2);
+    plot(xx([1:end 1], 1), xx([1:end 1], 2), 'ro-');
+    hold off;
+    axis([-5 5 -5 5]);
+    axis equal;
+  end
+  % -----------------------------------------------------------------------

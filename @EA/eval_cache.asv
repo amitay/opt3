@@ -1,0 +1,34 @@
+%% Evaluate x, first search in cache
+function [ea, x, f, g] = eval_cache(ea, x, repr_flag, state)
+
+	if repr_flag == 1
+		xx = convert_x(ea.object, x);
+	else
+		xx = x;
+	end
+	
+	if ea.param.use_cache == 1
+		yy = search(ea.cache, xx);
+		if ~isempty(yy)
+			ea.cache_hits = ea.cache_hits + 1;
+			f = yy(1:ea.prob.nf);
+			g = yy(ea.prob.nf+1:end);
+        else
+            xx_
+			[f, g, xx2] = feval(ea.analysis, xx, state);
+			ea.cache = insert(ea.cache, xx2, [f,g]);
+            if xx~=xx2
+                ea.cache = insert(ea.cache,xx,[f,g]);
+                xx = xx2;
+            end
+		end
+	else
+		[f, g, xx] = feval(ea.analysis, xx, state);
+	end
+	
+	if repr_flag == 1
+		x = convert_obj(ea.object, xx);
+	else
+		x = xx;
+	end
+end
