@@ -38,6 +38,7 @@ end
 function [ea] = samr_init(ea, varargin)
 	surr = Surrogate(ea.param_value);
 	surr = set_range(surr, ea.prob.range);
+	surr = set_mask(surr, ea.prob.eval_mask);
 	ea.algo_data.surr = surr;
 	
 	ea.algo_data.use_pop = 0;
