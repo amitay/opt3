@@ -115,10 +115,12 @@ function [ea] = EA(problem, algo, varargin)
 		param = add(param, 'use_cache', Range('set', {0,1}));
 		ea.param = check(param);
 		
+		% Load algorithm parameters
 		if ~isempty(ea.algo_param_func)
 			ea.param = feval(ea.algo_param_func, ea.param);
 		end
 
+		% Initialize solution cache
 		ea = init_cache(ea);
 		
 		% Create object
