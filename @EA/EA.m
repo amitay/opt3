@@ -10,7 +10,6 @@ function [ea] = EA(problem, algo, varargin)
 	ea.analysis = [];				% Analysis class
 
 	% Algorithm related info
-	ea.algo = '';
 	ea.algo_name = '';
 	ea.algo_param_func = [];
 	ea.algo_init_func = [];
