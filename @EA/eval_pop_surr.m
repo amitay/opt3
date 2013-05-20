@@ -14,8 +14,8 @@ function [ea, pop] = eval_pop_surr(ea, pop, surr, varargin)
 		g_mask = [];
 	else
 		fn_evals = zeros(1, ea.prob.nf+ea.prob.ng);
-		f_mask = zeros(1, ea.prob.nf);
-		g_mask = zeros(1, ea.prob.ng);
+		f_mask = ones(1, ea.prob.nf);
+		g_mask = ones(1, ea.prob.ng);
 		
 		if isempty(ea.prob.eval_mask)
 			surr_f_mask = zeros(1, ea.prob.nf);
@@ -53,7 +53,7 @@ function [ea, pop] = eval_pop_surr(ea, pop, surr, varargin)
 				pop = set_evalflag(pop, i, 2);
 			else
 				x = get_x(pop, i);
-				[ea, x, f, g] = eval_cache(ea, x, 1, state, f_mask, g_mask);
+				[ea, x, f, g] = eval_cache(ea, x, 1, state);
 				pop = set_x(pop, i, x);
 				pop = assign_fitness(pop, i, f, g);
 				pop = set_evalflag(pop, i, 1);
