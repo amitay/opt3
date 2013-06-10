@@ -5,7 +5,7 @@ function [x] = op_NEXT(r, x, eta)
 			x = r.val;
 		case 'range'
 			x = POLY(x, r.val(1), r.val(2), eta);
-	%		x = INCREASE(x, r.val(1), r.val(2), eta);
+			% x = INCREASE(x, r.val(1), r.val(2), eta);
 		case 'irange'
 			x = round(POLY(x, r.val(1), r.val(2), eta));
 		case 'set'

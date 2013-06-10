@@ -1,4 +1,4 @@
-%% Extract N 'elite' individuals 
+%% Extract N 'elite' individuals
 function [newpop] = reduce(pop, N)
 % Retain 'elite' individuals from combined population
 

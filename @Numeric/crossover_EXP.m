@@ -29,7 +29,7 @@ function [c1, fn_evals] = crossover_EXP(num, p1, p2)
 	for i = 1:nx
 		y1(i) = min(max(y1(i), min(num.range{i})), max(num.range{i}));
 	end
-	
+
 	fn_evals = 0;
 	c1 = convert_obj(num, y1);
 end

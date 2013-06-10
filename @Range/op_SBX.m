@@ -28,7 +28,7 @@ function [y1, y2] = SBX(x1, x2, x_min, x_max, eta)
 	if abs(x1-x2) > 1.e-6
 	% make sure x1 < x2
    	 if x2 < x1, tmp = x1; x1 = x2; x2 = tmp; end
-   	    
+
 		r = rand(1);
 		beta = 1 + (2 * (x1-x_min) / (x2-x1));
 		alpha = 2 - beta^-(eta+1);
@@ -38,7 +38,7 @@ function [y1, y2] = SBX(x1, x2, x_min, x_max, eta)
 			betaq = (1/(2-r*alpha))^(1/(eta+1));
 		end
 		y1 = 0.5 * (x1+x2 - betaq*(x2-x1));
-	
+
 		beta = 1 + (2 * (x_max-x2) / (x2-x1));
 		alpha = 2 - beta^-(eta+1);
 		if r <= 1/alpha
@@ -50,7 +50,7 @@ function [y1, y2] = SBX(x1, x2, x_min, x_max, eta)
 
 		y1 = min(max(y1, x_min), x_max);
 		y2 = min(max(y2, x_min), x_max);
-	
+
 		if rand(1) <= 0.5, tmp = y1; y1 = y2; y2 = tmp; end
 	else
 		y1 = x1;

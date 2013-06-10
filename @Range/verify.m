@@ -19,7 +19,7 @@ function verify(range, value, varname)
 		case 'scalar'
 			assert(isnumeric(value), ...
 				'%s value (%s) is not numeric', varname, value);
-			
+
 		case 'set'
 			if ischar(value)
 				vout = value;

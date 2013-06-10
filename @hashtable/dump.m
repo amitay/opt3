@@ -6,7 +6,7 @@ function dump(ht)
 			for j = 1:length(tmp)
 				s = tmp{j};
 				fprintf('%f@%d ', s.key, s.hval);
-			end			
+			end
 		end
 		fprintf('\n');
 	end

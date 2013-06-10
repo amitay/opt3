@@ -37,5 +37,5 @@ function plot_x(pop, gen, figure_id)
 		otherwise
 			boxplot(xx);
 	end
-	drawnow;		
+	drawnow;
 end

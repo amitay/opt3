@@ -21,14 +21,14 @@ function [pop] = Population(object, size, prob)
 
 	% constraint violation value
 	pop.cv = [];
-	
+
 	% ND sort information
 	pop.nd_rank = [];
 	pop.crowd = [];
-	
+
 	% Ranks
 	pop.rank = [];
-	
+
 	pop = class(pop, 'Population');
 
 	if nargin > 0
@@ -38,13 +38,13 @@ function [pop] = Population(object, size, prob)
 			pop.size = size;
 		elseif nargin == 3
 			pop.object = object;
-			pop.size = size;	
+			pop.size = size;
 			pop.nf = prob.nf;			% number of objectives
 			pop.ng = prob.ng;			% number of constraints
 		else
 			error('Wrong number of arguments');
 		end
-		
+
 		if pop.size > 0
 			pop = init(pop);
 		end

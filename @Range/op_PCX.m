@@ -4,5 +4,5 @@ function [c1, c2, c3] = op_PCX(x1, x2, x3, x_min, x_max, sig_eta, sig_zeta)
 %
 
 	error('Operator not defined');
-	
+
 end

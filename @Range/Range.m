@@ -21,7 +21,7 @@ function [obj] = Range(type, val)
 		end
 	else
 		obj.type = 'scalar';
-		obj.val = [];	
+		obj.val = [];
 	end
 
 	obj = class(obj, 'Range');

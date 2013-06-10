@@ -11,7 +11,7 @@ function [newpop] = plus(pop, childpop)
 	newpop.eval = [pop.eval ; childpop.eval];
 
 	newpop.cv = [pop.cv ; childpop.cv];
-	
+
 	% ND information and ranks of merged population should not be used
 	newpop.nd_rank = [pop.nd_rank ; childpop.nd_rank];
 	newpop.crowd = [pop.crowd ; childpop.crowd];
