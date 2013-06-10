@@ -11,6 +11,14 @@ function plot_x(pop, gen, figure_id)
 
 	figure(figure_id);
 	switch m
+        case 1
+            [xmin, xmax] = convert_range(pop.object);
+            frange = minmax(pop.f');
+            id1 = find(pop.feas == 0);
+            id2 = find(pop.feas == 1);
+            plot(xx(id1,1), pop.f(id1,1), 'r*', xx(id2,1), pop.f(id2,1));
+            axis([xmin xmax frange(1) frange(2)]);
+            title(sprintf('Generation %d', gen));
 		case 2
 			[xmin, xmax] = convert_range(pop.object);
 			id1 = find(pop.feas == 0);
