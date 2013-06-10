@@ -7,6 +7,6 @@ function [ps] = load(ps)
 			t = fileread('params.m');
 			eval(t);
 		end
+		ps.ivalue = param;
 	end
-	ps.ivalue = param;
 end
