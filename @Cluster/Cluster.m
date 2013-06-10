@@ -3,10 +3,10 @@ function [cdata] = Cluster(data, seed, method, varargin)
 
 	% Save random state
 	rand_state = RandStream.getDefaultStream.State;
-	
+
 	% Start new random
 	rand('twister', seed);
-	
+
 	cdata.centroid = [];
 	cdata.id = {};
 
@@ -46,7 +46,7 @@ function [cdata] = Cluster(data, seed, method, varargin)
 	end
 
 	cdata = class(cdata, 'Cluster');
-	
+
 	% Restore random state
 	RandStream.getDefaultStream.State = rand_state;
 end

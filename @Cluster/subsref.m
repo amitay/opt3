@@ -13,3 +13,4 @@ function [val] = subsref(a, s)
 				error('Cluster: This type of subreferencing not allowed.');
 		end
 	end
+end
