@@ -6,8 +6,8 @@ function algo_info = IEMA(ea)
 	algo_info.init_func = @iema_init;
 	algo_info.next_func = @iema_next;
 	algo_info.post_func = [];
-	
-	assert(ea.prob.nf == 1, 'IEMA only for single objective problems');	
+
+	assert(ea.prob.nf == 1, 'IEMA is only for single objective problems');
 end
 
 
