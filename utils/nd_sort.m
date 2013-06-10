@@ -18,7 +18,6 @@ end
 try
 	fronts = nd_sort_c(id, f_all(id,:));
 catch
-	error(lasterr);
 	warning('ND_SORT() MEX not available. Using slower matlab version.');
 	fronts = nd_sort_m(id, f_all(id,:));
 end
