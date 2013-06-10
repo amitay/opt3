@@ -7,6 +7,9 @@ function ea = next(ea)
 	if ~isempty(ea.prob.repair_func)
 		state = [];
 		state.gen_id = ea.gen_id;
+		state.nx = ea.prob.nx;
+		state.nf = ea.prob.nf;
+		state.ng = ea.prob.ng;
 		state.userdata = ea.prob.userdata;
 		
 		for i = 1:ea.childpop.size

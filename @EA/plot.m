@@ -18,6 +18,9 @@ function plot(ea)
 	if ~isempty(ea.prob.plot_func)
 		state = [];
 		state.gen_id = ea.gen_id;
+		state.nx = ea.prob.nx;
+		state.nf = ea.prob.nf;
+		state.ng = ea.prob.ng;
 		state.userdata = ea.prob.userdata;
 		x = convert_x(ea.object, ea.best.x{end});
 		feval(ea.prob.plot_func, x, state, 4);

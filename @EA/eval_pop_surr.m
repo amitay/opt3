@@ -29,6 +29,9 @@ function [ea, pop] = eval_pop_surr(ea, pop, surr, varargin)
 	
 	state = [];
 	state.gen_id = ea.gen_id;
+	state.nx = ea.prob.nx;
+	state.nf = ea.prob.nf;
+	state.ng = ea.prob.ng;
 	state.userdata = ea.prob.userdata;
 
 	% Evaluate population
