@@ -7,7 +7,7 @@ function [ea, pop] = eval_pop_surr(ea, pop, surr, varargin)
 	else
 		id = 1:pop.size;
 	end
-	
+
 	if strcmp(ea.analysis.type, 'composite')
 		fn_evals = 0;
 		f_mask = [];
@@ -16,7 +16,7 @@ function [ea, pop] = eval_pop_surr(ea, pop, surr, varargin)
 		fn_evals = zeros(1, ea.prob.nf+ea.prob.ng);
 		f_mask = ones(1, ea.prob.nf);
 		g_mask = ones(1, ea.prob.ng);
-		
+
 		if isempty(ea.prob.eval_mask)
 			surr_f_mask = zeros(1, ea.prob.nf);
 			surr_g_mask = zeros(1, ea.prob.ng);
@@ -26,7 +26,7 @@ function [ea, pop] = eval_pop_surr(ea, pop, surr, varargin)
 		end
 		surr_fn_evals = 1 - [surr_f_mask surr_g_mask];
 	end
-	
+
 	state = [];
 	state.gen_id = ea.gen_id;
 	state.nx = ea.prob.nx;
@@ -35,7 +35,7 @@ function [ea, pop] = eval_pop_surr(ea, pop, surr, varargin)
 	state.userdata = ea.prob.userdata;
 
 	% Evaluate population
-	for i = id 
+	for i = id
 		state.pop_id = i;
 		if get_evalflag(pop,i) == 0
 			x = convert_x(ea.object, get_x(pop,i));
@@ -64,7 +64,7 @@ function [ea, pop] = eval_pop_surr(ea, pop, surr, varargin)
 			end
 		end
 	end
-	
+
 	ea = add_fnevals(ea, fn_evals);
 end
 

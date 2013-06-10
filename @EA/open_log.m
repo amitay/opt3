@@ -8,7 +8,7 @@ function ea = open_log(ea, append_flag)
 	mode = modes{append_flag+1};
 
 	prefix = sprintf('%s-%s', ea.prob_name, ea.algo_name);
-	
+
 	% Initialize Logger
 	ea.logger = Logger(prefix, append_flag);
 

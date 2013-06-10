@@ -1,7 +1,7 @@
 %% DE evolution strategy (DE/best/1/exp)
 function [ea, childpop] = evolve_de(ea, pop)
 	N = pop.size;
-	
+
 	childpop = Population(pop, N);
 
 	% Best vector
@@ -20,5 +20,5 @@ function [ea, childpop] = evolve_de(ea, pop)
 
 		c1 = crossover_EXP(ea.object, get_x(pop,i), ptrial);
 		childpop = set_x(childpop, i, c1);
-	end	
+	end
 end

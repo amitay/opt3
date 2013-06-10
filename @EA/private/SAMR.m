@@ -7,7 +7,7 @@ function algo_info = SAMR(ea)
 	algo_info.init_func = @samr_init;
 	algo_info.next_func = @samr_next;
 	algo_info.post_func = [];
-	
+
 	assert(strcmp(ea.prob.class, 'Numeric'), ...
 			'SAMR is only for Numeric representation');
 end
@@ -24,7 +24,7 @@ function [param] = samr_param(param)
 	param = add(param, 'subea_pop_size', Range('irange', [1,inf]));
 	param = add(param, 'subea_generations', Range('irange', [1,100]));
 	param = check(param);
-	
+
 	assert(mod(param.pop_size,4) == 0, ...
 		'Population size must be multiple of 4');
 	assert(mod(param.subea_pop_size,4) == 0, ...
@@ -40,9 +40,9 @@ function [ea] = samr_init(ea, varargin)
 	surr = set_range(surr, ea.prob.range);
 	surr = set_mask(surr, ea.prob.eval_mask);
 	ea.algo_data.surr = surr;
-	
+
 	ea.algo_data.use_pop = 0;
-	
+
 	ea.pop = Population(ea.object, 0, ea.prob);
 	ea.childpop = Population(ea.object, ea.param.pop_size, ea.prob);
 	ea.childpop = sample(ea.childpop, varargin{:});
@@ -53,15 +53,15 @@ end
 function [ea] = samr_next(ea)
 	[ea, ea.childpop] = eval_pop(ea, ea.childpop);
 	ea.algo_data.surr = add_pop(ea.algo_data.surr, ea.childpop);
-	
+
 	if ea.gen_id >= ea.param.train_period
 		ea.algo_data.surr = train(ea.algo_data.surr);
 	end
-	
+
 	ea.pop = ea.pop + ea.childpop;
 	ea.pop = sort(ea, ea.pop, 'nd_maxcv');
 	ea.pop = reduce(ea.pop, ea.param.pop_size);
-	
+
 	if ea.gen_id < ea.param.train_period
 		[ea, ea.childpop] = evolve(ea, ea.pop, 'nsga2');
 	else

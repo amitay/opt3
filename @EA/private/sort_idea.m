@@ -29,7 +29,7 @@ function [pop] = sort_idea(ea, pop)
 
 	assert(length(ranks1) + length(ranks2) == pop.size);
 	pop = set_rank(pop, 1:pop.size, [ranks1; ranks2]);
-	
+
 	% promote infeasible solutions
 	N_inf = min(sum(pop.feas == 0), ...
 				round(ea.param.infeasible_ratio*ea.param.pop_size));

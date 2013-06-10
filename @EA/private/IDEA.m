@@ -6,7 +6,7 @@ function algo_info = IDEA(ea)
 	algo_info.init_func = @idea_init;
 	algo_info.next_func = @idea_next;
 	algo_info.post_func = [];
-	
+
 	assert(strcmp(ea.prob.class, 'Numeric'), ...
 			'IDEA is only for Numeric representation');
 end
@@ -21,7 +21,7 @@ function [param] = idea_param(param)
 	param = add(param, 'infeasible_ratio', Range('range', [0,1]));
 	param = add(param, 'infeasible_strategy', Range('range', [1,2]));
 	param = check(param);
-	
+
 	assert(mod(param.pop_size,4) == 0, ...
 		'Population size must be multiple of 4');
 end

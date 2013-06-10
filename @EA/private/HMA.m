@@ -9,7 +9,7 @@ function algo_info = HMA(ea)
 	algo_info.init_func = @hma_init;
 	algo_info.next_func = @hma_next;
 	algo_info.post_func = [];
-	
+
 	assert(ea.prob.nf == 1, 'HMA only for single objective problems');
 end
 
@@ -27,7 +27,7 @@ function [param] = hma_param(param)
 	param = add(param, 'infeasible_strategy', Range('range', [1,2]));
 	param = add(param, 'ls_display', Range('set', {'off', 'iter', 'final'}));
 	param = check(param);
-	
+
 	assert(mod(param.pop_size,4) == 0, ...
 		'Population size must be multiple of 4');
 end
@@ -38,7 +38,7 @@ function [ea] = hma_init(ea, varargin)
 	ea.pop = Population(ea.object, 0, ea.prob);
 	ea.childpop = Population(ea.object, ea.param.pop_size, ea.prob);
 	ea.childpop = sample(ea.childpop, varargin{:});
-	
+
 	ea.algo_data.f_best1 = [];
 	ea.algo_data.f_best2 = [];
 	ea.algo_data.change = 0;
@@ -49,21 +49,21 @@ end
 %% HMA - generation step
 function [ea] = hma_next(ea)
 	[ea, ea.childpop] = eval_pop(ea, ea.childpop);
-	
+
 	ea.pop = ea.pop + ea.childpop;
 	ea.pop = sort(ea, ea.pop, 'idea');
 	ea.pop = reduce(ea.pop, ea.param.pop_size);
-	
+
 	% Best after evaluation
 	id = find_best(ea.pop);
 	ea.algo_data.f_best1 = get_f(ea.pop, id);
-	
+
 	if ea.gen_id > 1
 		[ea, ea.pop] = do_localsearch(ea, ea.pop);
 		ea.pop = sort(ea, ea.pop, 'idea');
 		ea.pop = reduce(ea.pop, ea.param.pop_size);
 	end
-	
+
 	% Best after local search
 	id = find_best(ea.pop);
 	ea.algo_data.f_best2 = get_f(ea.pop, id);
@@ -80,17 +80,17 @@ function [ea] = hma_next(ea)
 			[ea, ea.childpop] = evolve(ea, ea.pop, 'nsga2');
 		else
 			[ea, ea.childpop] = evolve(ea, ea.pop, 'de');
-		end		
+		end
 	end
 end
 
 %%
 function [ea, pop] = do_localsearch(ea, pop)
- 
+
 	% selection of solution for local search
-	if rand(1) < 0.2 
+	if rand(1) < 0.2
 		id = randint(1, 1, [1 pop.size]);
-	else     
+	else
 		if ea.algo_data.f_best1 < ea.algo_data.f_best2 ...
 				|| ea.algo_data.change == 1
 			id = find_best(pop);
@@ -103,14 +103,14 @@ function [ea, pop] = do_localsearch(ea, pop)
 	% local search
 	[ea, x2, f, g] = localsearch(ea, x1, @obj_func, @constr_func, ...
 								max(1000, 50*ea.prob.nx), 10000);
-				
+
 	% replace last solution
 	pop = set_x(pop, pop.size, convert_obj(ea.object, x2));
 	pop = assign_fitness(pop, pop.size, f, -g);
-        
+
 	if f < ea.algo_data.f_best1
 		ea.algo_data.change = 1;
-	else 
+	else
 		ea.algo_data.change = 0;
 	end
 end

@@ -22,7 +22,7 @@ function [param] = iema_param(param)
 	param = add(param, 'infeasible_strategy', Range('range', [1,2]));
 	param = add(param, 'ls_display', Range('set', {'off', 'iter', 'final'}));
 	param = check(param);
-	
+
 	assert(mod(param.pop_size,4) == 0, ...
 		'Population size must be multiple of 4');
 end
@@ -33,7 +33,7 @@ function [ea] = iema_init(ea, varargin)
 	ea.pop = Population(ea.object, 0, ea.prob);
 	ea.childpop = Population(ea.object, ea.param.pop_size, ea.prob);
 	ea.childpop = sample(ea.childpop, varargin{:});
-	
+
 	ea.algo_data.change = 0;
 	ea.algo_data.change_all = [];
 end
@@ -45,7 +45,7 @@ function [ea] = iema_next(ea)
 	ea.pop = ea.pop + ea.childpop;
 	ea.pop = sort(ea, ea.pop, 'idea');
 	ea.pop = reduce(ea.pop, ea.param.pop_size);
-	
+
 	if ea.gen_id > 1
 		[ea, ea.pop] = do_localsearch(ea, ea.pop);
 		ea.pop = sort(ea, ea.pop, 'idea');
@@ -53,14 +53,14 @@ function [ea] = iema_next(ea)
 	end
 
 	ea.algo_data.change_all = [ea.algo_data.change_all ea.algo_data.change];
-	
+
 	[ea, ea.childpop] = evolve(ea, ea.pop, 'nsga2');
 end
 
 
 %%
 function [ea, pop] = do_localsearch(ea, pop)
- 
+
 	% select solution for local search
 	if ea.algo_data.change == 0
 		idx = find_feasible(pop);
@@ -76,7 +76,7 @@ function [ea, pop] = do_localsearch(ea, pop)
 
 	% perform local search
 	[ea, x2, f, g] = localsearch(ea, x1, @obj_func, @constr_func, ...
-									max(1000, 50*ea.prob.nx), 1000);
+					max(1000, 50*ea.prob.nx), 1000);
 
 	% replace last solution with new solution
 	pop = set_x(pop, pop.size, convert_obj(ea.object, x2));

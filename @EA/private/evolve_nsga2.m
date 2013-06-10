@@ -31,7 +31,7 @@ end
 %% Tournament - used only after sorting
 function [parent] = tournament(pop, id1, id2)
 	rank = get_rank(pop, [id1 id2]);
-	
+
 	if rank(1) < rank(2)
 		id = id1;
 	elseif rank(2) < rank(1)
@@ -41,6 +41,6 @@ function [parent] = tournament(pop, id1, id2)
 	else
 		id = id2;
 	end
-		
+
 	parent = get_x(pop, id);
 end

@@ -3,8 +3,8 @@ function [ea] = save_data(ea)
 
 	% save all population
 	save(ea.pop, ea.gen_id, ea.ofd_all);
-	
-	% save best 
+
+	% save best
 	gen = ea.gen_id;
 	fprintf(ea.ofd_best, '%4d', gen);
 	fprintf(ea.ofd_best, ' %5d', ea.best.fn_evals(gen));

@@ -8,7 +8,7 @@ function algo_info = PCSEA(ea)
 	algo_info.post_func = [];
 
 	assert(strcmp(ea.prob.class, 'Numeric'), ...
-		'PCSEA is only for Numeric representation');	
+		'PCSEA is only for Numeric representation');
 end
 
 
@@ -20,7 +20,7 @@ function [param] = pcsea_param(param)
 	param = add(param, 'mutation_prob', Range('range', [0,1]));
 	param = add(param, 'mutation_poly_eta', Range('range', [1,100]));
 	param = check(param);
-	
+
 	assert(mod(param.pop_size,4) == 0, ...
 		'Population size must be multiple of 4');
 end
