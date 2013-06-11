@@ -14,7 +14,7 @@ end
 
 
 %% KPGA - parameters
-function [param] = kpga(param)
+function [param] = kpga_param(param)
 	param = add(param, 'pop_size', Range('irange', [1,inf]));
 	param = add(param, 'crossover_prob', Range('range', [0,1]));
 	param = add(param, 'crossover_sbx_eta', Range('range', [1,100]));
