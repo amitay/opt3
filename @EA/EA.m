@@ -59,7 +59,7 @@ function [ea] = EA(problem, algo, varargin)
 			prob = problem;
 		else
 			if isa(problem, 'function_handle')
-				ea.prob_name = strrep(func2str(config), '/', '__');
+				ea.prob_name = strrep(func2str(problem), '/', '__');
 				analysis = problem;
 			else
 				ea.prob_name = problem;
