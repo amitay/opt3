@@ -1,5 +1,5 @@
 %% Initialize population
-function [pop] = sample(pop, varargin)
+function [pop] = sample(pop)
 	% Initialize population with object instances
-	pop.x = sample(pop.object, pop.size, varargin{:});
+	pop.x = sample(pop.object, pop.size, pop.sampling, pop.sampling_data);
 end

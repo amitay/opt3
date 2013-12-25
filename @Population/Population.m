@@ -29,6 +29,17 @@ function [pop] = Population(object, size, prob)
 	% Ranks
 	pop.rank = [];
 
+	% load parameters
+	param = Paramset();
+	param = add(param, 'sampling', ...
+		Range('set', {'uniform', 'lhs', 'centroid', 'specified'}));
+	param = add(param, 'sampling_data', Range('object', []));
+	param = check(param);
+
+	% Assign parameter values
+	pop.sampling = param.sampling;
+	pop.sampling_data = param.sampling_data;
+
 	pop = class(pop, 'Population');
 
 	if nargin > 0
