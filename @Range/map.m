@@ -10,7 +10,7 @@ function [x] = map(range, r)
 		case 'set'
 			id = round(range.val(1)-0.5 + (range.val(2)-range.val(1)+1) * r);
 			x = range.val(id);
-		case 'subset'
-			error('Cannot map to subset range');
+		case {'subset', 'object'}
+			error('Cannot map to object/subset range');
 	end
 end

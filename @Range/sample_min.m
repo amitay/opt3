@@ -14,7 +14,7 @@ function [x] = sample_min(range, N)
 			x = ones(N,1) * range.val(1);
 		case 'set'
 			x = ones(N,1) * range.val(1);
-		case 'subset'
-			error('Sampling not defined for subset range');
+		case {'subset', 'object'}
+			error('Sampling not defined for object/subset range');
 	end
 end

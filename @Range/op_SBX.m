@@ -16,8 +16,8 @@ function [y1, y2] = op_SBX(r, x1, x2, eta)
 			[t1, t2] = SBX(i1, i2, 1, length(r.val), eta);
 			y1 = r.val(round(t1));
 			y2 = r.val(round(t2));
-		case 'subset'
-			error('Operator not defined for subset range');
+		case {'subset', 'object'}
+			error('Operator not defined for object/subset range');
 	end
 end
 

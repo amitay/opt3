@@ -11,5 +11,7 @@ function display(range)
 			fprintf('set: %s\n', range.val);
 		case 'subset'
 			fprintf('subset: %s\n', range.val);
+		case 'object'
+			fprintf('object:\n');
 	end
 end

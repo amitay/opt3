@@ -17,7 +17,7 @@ function [x] = sample_high(range, N)
 		case 'set'
 			sigma = length(range.val) / 10;
 			x = range.val(round(-abs(sigma*randn(N,1)) + length(range.val)));
-		case 'subset'
-			error('Sampling not defined for subset range');
+		case {'subset', 'object'}
+			error('Sampling not defined for object/subset range');
 	end
 end

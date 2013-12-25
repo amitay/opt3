@@ -13,6 +13,8 @@ function [x] = op_PREV(r, x, eta)
 			i = find(r.val == x, 1);
 			t = POLY(i, 1, length(r.val), eta);
 			x = r.val(round(t));
+		case {'subset', 'object'}
+			error('Cannot operate on object/subset range');
 	end
 end
 

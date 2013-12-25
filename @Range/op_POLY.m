@@ -12,8 +12,8 @@ function [x] = op_POLY(r, x, eta)
 			i = find(r.val == x, 1);
 			t = POLY(i, 1, length(r.val), eta);
 			x = r.val(round(t));
-		case 'subset'
-			error('Operator not defined for subset range');
+		case {'subset', 'object'}
+			error('Operator not defined for object/subset range');
 	end
 end
 

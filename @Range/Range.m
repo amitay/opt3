@@ -16,8 +16,11 @@ function [obj] = Range(type, val)
 					val = cell2mat(val);
 				end
 				obj.val = sort(val);
+			case 'object'
+				obj.val = val;
 			otherwise
-				error('Unknown range type. Use scalar/range/irange/set/subset.');
+				error('Unknown range type.');
+				error('Use scalar/range/irange/object/set/subset.');
 		end
 	else
 		obj.type = 'scalar';

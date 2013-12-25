@@ -14,7 +14,7 @@ function [x] = sample_max(range, N)
 			x = ones(N,1) * range.val(2);
 		case 'set'
 			x = ones(N,1) * range.val(end);
-		case 'subset'
-			error('Sampling not defined for subset range');
+		case {'subset', 'object'}
+			error('Sampling not defined for object/subset range');
 	end
 end

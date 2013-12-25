@@ -14,7 +14,7 @@ function [x] = sample(range, N)
 			x = randint(N,1,range.val);
 		case 'set'
 			x = range.val(randint(N,1,[1, length(range.val)]));
-		case 'subset'
-			error('Sampling not defined for subset range');
+		case {'subset','object'}
+			error('Sampling not defined for object/subset range');
 	end
 end
