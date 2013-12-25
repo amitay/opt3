@@ -77,7 +77,7 @@ function [surr] = Surrogate(varargin)
 	param = add(param, 'surr_mse_threshold', Range('range', [0,1]));
 	param = add(param, 'surr_pred_dist', Range('range', [0,1]));
 	param = check(param);
-			
+
 	% Assign parameter values
 	surr.seed = param.seed;
 	surr.n_clusters = param.surr_num_clusters;
