@@ -66,7 +66,9 @@ function [ea] = EA(problem, algo, varargin)
 				analysis = str2func(problem);
 			end
 			prob = feval(problem);
-			prob.analysis = analysis;
+            if ~isfield(prob, 'analysis')
+                prob.analysis = analysis;
+            end
 		end
 
 		% Check for required fields
