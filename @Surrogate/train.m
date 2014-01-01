@@ -2,7 +2,8 @@ function [surr] = train(surr)
 % TRAIN() trains surrogate model(s)
 
 	% Save random state
-	rand_state = RandStream.getDefaultStream.State;
+	s1 = RandStream.getGlobalStream;
+	rand_state = s1.State;
 
 	% First step is construct number of clusters
 	% Second step is build surrogate for each cluster
@@ -46,5 +47,5 @@ function [surr] = train(surr)
 					n_valid, surr.n_clusters, maxerror);
 
 	% Restore random state
-	RandStream.getDefaultStream.State = rand_state;
+	s1.State = rand_state;
 end

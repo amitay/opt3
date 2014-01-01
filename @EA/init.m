@@ -7,7 +7,8 @@ function ea = init(ea)
 	if ea.param.seed == 0
 		ea.param = set(ea.param, 'seed', round(rand(1)*2^32));
 	end
-	rand('twister', ea.param.seed);
+	s = RandStream('mt19937ar', 'Seed', ea.param.seed);
+	RandStream.setGlobalStream(s);
 
 	% Starting algorithm
 	write(ea.logger, sprintf('Starting %s\n', ea.algo_name));
