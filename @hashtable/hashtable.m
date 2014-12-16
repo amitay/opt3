@@ -1,56 +1,41 @@
-function ht = hashtable(minsize, eq_func, hash_func)
+function ht = hashtable(key_size, value_size, min_size)
 % Hashtable() - Create hashtable
 %
 % properties:
-%  'minsize'  - initial capacity of the hash table (default = 100)
+%  'key_size'   - size of x vector
+%  'value_size' - size of y vector
+%  'min_size'   - initial size of data
 %
-%  'eq_func'  - the function (handle) to use for testing key equality.
-%               The default works for integers, reals, complex numbers, 
-%               strings, matrices, structs, and cell arrays of the above,
-%               but of course may not be efficient or suitable for your
-%               particular data structure.  If you supply a new equality 
-%               function, you should probably also supply a new hashcode 
-%               function.  Equality functions should take two inputs and
-%               return a boolean.
-%
-%  'hash_func' - the hashcode function to use to generate hash values
-%               for keys of the table.  The default works well only
-%               with numbers, strings, and matrices.
-%               Structs, cell arrays, etc. will get a very weak hash, so
-%               you'll need to supply a better hashcode function if you
-%               want to use these as keys.
+	if nargin == 2
+		min_size = 100;
+	end
 
-	assert(minsize < 2^30, 'Hashtable size too large');
+	ht.eq_func = @array_equal;
+	ht.hash_func = @array_hash;
 
-	if nargin < 1
-		minsize = 10;
-	end
-	if nargin < 2
-		eq_func = @array_equal;
-	end
-	if nargin < 3
-		hash_func = @array_hash;
-	end
+	ht.key_size = key_size;
+	ht.value_size = value_size;
 
 	ht.primes = [ 53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, ...
-					24593, 49157, 98317, 196613, 393241, 786433, ...
-					1572869, 3145739, 6291469, 12582917, 25165843, ...
-					50331653, 100663319, 201326611, 402653189, ...
-					805306457, 1610612741 ];
-		
-	for i = 1:length(ht.primes)
-		if ht.primes(i) > minsize
+			24593, 49157, 98317, 196613, 393241, 786433, ...
+			1572869, 3145739, 6291469, 12582917, 25165843, ...
+			50331653, 100663319, 201326611, 402653189, ...
+			805306457, 1610612741 ];
+
+	for i = 1 : length(ht.primes)
+		if ht.primes(i) > min_size
 			size = ht.primes(i);
 			break
 		end
 	end
-	
-	ht.size = size;
-    ht.eq_func = eq_func;
-    ht.hash_func = hash_func;
-    ht.load_factor = 0.75;
+
 	ht.count = 0;
-    ht.table = cell(ht.size, 1);
-    
-    ht = class(ht, 'hashtable');
+	ht.size = size;
+	ht.data = zeros(ht.size, ht.key_size+ht.value_size);
+	ht.hlist = zeros(ht.size, 1);
+
+	ht.table = cell(ht.size, 1);
+	ht.load_factor = 0.75;
+
+	ht = class(ht, 'hashtable');
 end

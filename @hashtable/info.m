@@ -18,4 +18,4 @@ for i = 1:ht.size
 end
 
 fprintf('      unused slots: %d\n', ne);
-fprintf('     longest chain: %d\n', mc);   
+fprintf('     longest chain: %d\n', mc);

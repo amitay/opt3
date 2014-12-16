@@ -4,8 +4,8 @@ function dump(ht)
 		tmp = ht.table{i};
 		if ~isempty(tmp)
 			for j = 1:length(tmp)
-				s = tmp{j};
-				fprintf('%f@%d ', s.key, s.hval);
+				s = tmp(j)
+				fprintf('%d ', ht.hlist(s));
 			end
 		end
 		fprintf('\n');

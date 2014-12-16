@@ -6,7 +6,7 @@ function ea = init_cache(ea)
 			tmp = load(filename);
 			ea.cache = tmp.cache;
 		catch
-			ea.cache = hashtable(100);
+			ea.cache = hashtable(ea.prob.nx, ea.prob.nx+ea.prob.nf+ea.prob.ng);
 		end
 	else
 		ea.cache = [];

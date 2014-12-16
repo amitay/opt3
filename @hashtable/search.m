@@ -5,8 +5,9 @@ function [val] = search(ht, key)
 	val = [];
 	if ~isempty(tmp)
 		for i = 1:length(tmp)
-			if feval(ht.eq_func, key, tmp{i}.key)
-				val = tmp{i}.value;
+			idx = tmp(i);
+			if feval(ht.eq_func, key, ht.data(idx,1:ht.key_size))
+				val = ht.data(idx,ht.key_size+1:end);
 				break
 			end
 		end
