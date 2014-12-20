@@ -38,7 +38,7 @@ function [ea, pop] = eval_pop_surr(ea, pop, surr, varargin)
 	for i = id
 		state.pop_id = i;
 		if get_evalflag(pop,i) == 0
-			x = convert_x(ea.object, get_x(pop,i));
+			x = get_x(pop,i);
 			[y, valid] = predict(surr, x);
 			if valid == 1
 				if strcmp(ea.analysis.type, 'composite')
@@ -47,17 +47,15 @@ function [ea, pop] = eval_pop_surr(ea, pop, surr, varargin)
 				else
 					f1 = y(1:pop.nf);
 					g1 = y(pop.nf+1:end);
-					x = get_x(pop, i);
-					[ea, ~, f2, g2] = eval_cache(ea, x, 1, state, surr_f_mask, surr_g_mask);
+					[ea, ~, f2, g2] = eval_cache(ea, x, state, surr_f_mask, surr_g_mask);
 					[f, g] = merge_fg(f1, g1, f2, g2, surr_f_mask, surr_g_mask);
 					fn_evals = fn_evals + surr_fn_evals;
 				end
 				pop = assign_fitness(pop, i, f, g);
 				pop = set_evalflag(pop, i, 2);
 			else
-				x = get_x(pop, i);
-				[ea, x, f, g] = eval_cache(ea, x, 1, state);
-				pop = set_x(pop, i, x);
+				[ea, xx, f, g] = eval_cache(ea, x, 1, state);
+				pop = set_x(pop, i, xx);
 				pop = assign_fitness(pop, i, f, g);
 				pop = set_evalflag(pop, i, 1);
 				fn_evals = fn_evals + 1;

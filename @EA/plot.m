@@ -11,9 +11,6 @@ function plot(ea)
 	% x distribution
 	plot_x(ea.pop, ea.gen_id, 2);
 
-	% object specific plot
-	plot(ea.object, ea.best.x{end}, 3);
-
 	% user defined plot function
 	if ~isempty(ea.prob.plot_func)
 		state = [];
@@ -22,7 +19,7 @@ function plot(ea)
 		state.nf = ea.prob.nf;
 		state.ng = ea.prob.ng;
 		state.userdata = ea.prob.userdata;
-		x = convert_x(ea.object, ea.best.x{end});
+		x = ea.best.x(end,:);
 		feval(ea.prob.plot_func, x, state, 4);
 	end
 	drawnow;

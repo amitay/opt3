@@ -13,6 +13,6 @@ function [ea] = save_data(ea)
 	if ea.prob.ng > 0
 		fprintf(ea.ofd_best, ' %g', ea.best.g(gen,:));
 	end
-	fprintf(ea.ofd_best, ' %s', str(ea.object, ea.best.x{gen}));
+	fprintf(ea.ofd_best, ' %g', ea.best.x(gen,:));
 	fprintf(ea.ofd_best, '\n');
 end

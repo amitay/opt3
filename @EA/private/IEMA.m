@@ -30,8 +30,8 @@ end
 
 %% IEMA - initialization
 function [ea] = iema_init(ea, varargin)
-	ea.pop = Population(ea.object, 0, ea.prob);
-	ea.childpop = Population(ea.object, ea.param.pop_size, ea.prob);
+	ea.pop = Population(ea.prob, 0);
+	ea.childpop = Population(ea.prob, ea.param.pop_size);
 	ea.childpop = sample(ea.childpop, varargin{:});
 
 	ea.algo_data.change = 0;

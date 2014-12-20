@@ -18,7 +18,7 @@ function [ea, childpop] = evolve_de(ea, pop)
 		xtrial = x1 + ea.param.mutation_de_scale * (x2 - x3);
 		ptrial = convert_obj(ea.object, xtrial);
 
-		c1 = crossover_EXP(ea.object, get_x(pop,i), ptrial);
+		c1 = crossover_EXP(ea, get_x(pop,i), ptrial);
 		childpop = set_x(childpop, i, c1);
 	end
 end

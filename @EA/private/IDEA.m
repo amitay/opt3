@@ -6,9 +6,6 @@ function algo_info = IDEA(ea)
 	algo_info.init_func = @idea_init;
 	algo_info.next_func = @idea_next;
 	algo_info.post_func = [];
-
-	assert(strcmp(ea.prob.class, 'Numeric'), ...
-			'IDEA is only for Numeric representation');
 end
 
 %% IDEA Parameters
@@ -29,8 +26,8 @@ end
 
 %% IDEA - initialization
 function [ea] = idea_init(ea, varargin)
-	ea.pop = Population(ea.object, 0, ea.prob);
-	ea.childpop = Population(ea.object, ea.param.pop_size, ea.prob);
+	ea.pop = Population(ea.prob, 0);
+	ea.childpop = Population(ea.prob, ea.param.pop_size);
 	ea.childpop = sample(ea.childpop, varargin{:});
 end
 

@@ -7,9 +7,6 @@ function algo_info = SAEA(ea)
 	algo_info.init_func = @saea_init;
 	algo_info.next_func = @saea_next;
 	algo_info.post_func = [];
-
-	assert(strcmp(ea.prob.class, 'Numeric'), ...
-			'SAEA is only for Numeric representation');
 end
 
 
@@ -36,8 +33,8 @@ function [ea] = saea_init(ea, varargin)
 	surr = set_mask(surr, ea.prob.eval_mask);
 	ea.algo_data.surr = surr;
 
-	ea.pop = Population(ea.object, 0, ea.prob);
-	ea.childpop = Population(ea.object, ea.param.pop_size, ea.prob);
+	ea.pop = Population(ea.prob, 0);
+	ea.childpop = Population(ea.prob, ea.param.pop_size);
 	ea.childpop = sample(ea.childpop, varargin{:});
 end
 
@@ -90,8 +87,8 @@ function [ea] = eval_extra(ea)
 		state.pop_id = ea.pop.size + i;
 		id = get_rank(ea.childpop, i);
 		if dominates(ea.childpop, id, ea.pop, 1) >= 0 && get_evalflag(ea.childpop, i) ~= 1
-			[ea, x, f, g] = eval_cache(ea, get_x(ea.childpop,i), 1, state);
-			ea.childpop = set_x(ea.childpop, i, x);
+			[ea, xx, f, g] = eval_cache(ea, get_x(ea.childpop,i), state);
+			ea.childpop = set_x(ea.childpop, i, xx);
 			ea.childpop = assign_fitness(ea.childpop, i, f, g);
 			ea.childpop = set_evalflag(ea.childpop, i, 1);
 			fn_evals = fn_evals + 1;

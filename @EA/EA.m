@@ -45,9 +45,6 @@ function [ea] = EA(problem, algo, varargin)
 	ea.childpop = [];
 	ea.fn_evals = [];
 
-	% Representation related info
-	ea.object = [];
-
 	% Evaluation cache
 	ea.cache = [];
 	ea.cache_hits = 0;
@@ -119,9 +116,6 @@ function [ea] = EA(problem, algo, varargin)
     end
 
     % Check for optional fields
-    if ~isfield(prob, 'class')
-        prob.class = 'Numeric';
-    end
     if ~isfield(prob, 'userdata')
         prob.userdata = [];
     end
@@ -175,7 +169,4 @@ function [ea] = EA(problem, algo, varargin)
 
     % Initialize solution cache
     ea = init_cache(ea);
-
-    % Create object
-    ea.object = feval(ea.prob.class, ea.prob, ea.param);
 end

@@ -7,8 +7,6 @@ function algo_info = DE(ea)
 	algo_info.next_func = @de_next;
 	algo_info.post_func = [];
 
-	assert(strcmp(ea.prob.class, 'Numeric'), ...
-		'DE is only for Numeric representation');
 	assert(ea.prob.nf == 1, 'DE is only for single objective problems');
 end
 
@@ -26,7 +24,7 @@ end
 
 %% DE initialization
 function [ea] = de_init(ea, varargin)
-	ea.childpop = Population(ea.object, ea.param.pop_size, ea.prob);
+	ea.childpop = Population(ea.prob, ea.param.pop_size);
 	ea.childpop = sample(ea.childpop, varargin{:});
 end
 
@@ -36,7 +34,7 @@ function [ea] = de_next(ea)
 	if ea.gen_id == 1
 		[ea, ea.childpop] = eval_pop(ea, ea.childpop);
 	else
-		[ea, ea.childpop] = evolve(ea, ea.pop, 'de_incremental');	
+		[ea, ea.childpop] = evolve(ea, ea.pop, 'de_incremental');
 	end
 	ea.pop = ea.childpop;
 	ea.pop = sort(ea, ea.pop, 'nd_maxcv');

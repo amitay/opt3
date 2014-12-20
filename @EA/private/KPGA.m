@@ -7,8 +7,6 @@ function algo_info = KPGA(ea)
 	algo_info.next_func = @kpga_next;
 	algo_info.post_func = [];
 
-	assert(strcmp(ea.prob.class, 'Numeric'), ...
-		'KPGA is only for Numeric representation');
 	assert(ea.prob.nf == 1, 'KPGA is only for single objective problems');
 end
 
@@ -32,8 +30,8 @@ end
 
 %% KPGA - initialization
 function [ea] = kpga_init(ea, varargin)
-	ea.pop = Population(ea.object, 0, ea.prob);
-	ea.childpop = Population(ea.object, ea.param.pop_size, ea.prob);
+	ea.pop = Population(ea.prob, 0);
+	ea.childpop = Population(ea.prob, ea.param.pop_size);
 	ea.childpop = sample(ea.childpop, varargin{:});
 end
 

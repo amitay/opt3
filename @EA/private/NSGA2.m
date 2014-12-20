@@ -6,9 +6,6 @@ function algo_info = NSGA2(ea)
 	algo_info.init_func = @nsga2_init;
 	algo_info.next_func = @nsga2_next;
 	algo_info.post_func = [];
-
-	assert(strcmp(ea.prob.class, 'Numeric'), ...
-		'NSGA-II is only for Numeric representation');
 end
 
 
@@ -28,8 +25,8 @@ end
 
 %% NSGA2 - initialization
 function [ea] = nsga2_init(ea, varargin)
-	ea.pop = Population(ea.object, 0, ea.prob);
-	ea.childpop = Population(ea.object, ea.param.pop_size, ea.prob);
+	ea.pop = Population(ea.prob, 0);
+	ea.childpop = Population(ea.prob, ea.param.pop_size);
 	ea.childpop = sample(ea.childpop, varargin{:});
 end
 

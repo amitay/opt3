@@ -7,9 +7,6 @@ function algo_info = SAMR(ea)
 	algo_info.init_func = @samr_init;
 	algo_info.next_func = @samr_next;
 	algo_info.post_func = [];
-
-	assert(strcmp(ea.prob.class, 'Numeric'), ...
-			'SAMR is only for Numeric representation');
 end
 
 
@@ -43,8 +40,8 @@ function [ea] = samr_init(ea, varargin)
 
 	ea.algo_data.use_pop = 0;
 
-	ea.pop = Population(ea.object, 0, ea.prob);
-	ea.childpop = Population(ea.object, ea.param.pop_size, ea.prob);
+	ea.pop = Population(ea.prob, 0);
+	ea.childpop = Population(ea.prob, ea.param.pop_size);
 	ea.childpop = sample(ea.childpop, varargin{:});
 end
 

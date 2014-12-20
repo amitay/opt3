@@ -10,7 +10,7 @@ function [surr] = add_pop(surr, pop)
 	for i = 1:pop.size
 		% Need to add only solutions that are evaluated truly
 		if get_evalflag(pop,i) == 1
-			x(count+1,:) = convert_x(pop.object, get_x(pop,i));
+			x(count+1,:) = get_x(pop,i);
 			y(count+1,:) = [get_f(pop,i) get_g(pop,i)];
 			count = count+1;
 		end

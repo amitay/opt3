@@ -10,7 +10,7 @@ function [ea, childpop] = evolve_nsga2(ea, pop)
         i2 = tournament(pop, a1(i+2), a1(i+3));
         p1 = get_x(pop, i1);
         p2 = get_x(pop, i2);
-        [c1, c2] = crossover_SBX(ea.object, p1, p2);
+        [c1, c2] = crossover_SBX(ea, p1, p2);
         childpop = set_x(childpop, i, c1);
         childpop = set_x(childpop, i+1, c2);
 
@@ -18,7 +18,7 @@ function [ea, childpop] = evolve_nsga2(ea, pop)
         i2 = tournament(pop, a2(i+2), a2(i+3));
         p1 = get_x(pop, i1);
         p2 = get_x(pop, i2);
-        [c1, c2] = crossover_SBX(ea.object, p1, p2);
+        [c1, c2] = crossover_SBX(ea, p1, p2);
         childpop = set_x(childpop, i+2, c1);
         childpop = set_x(childpop, i+3, c2);
     end
@@ -26,7 +26,7 @@ function [ea, childpop] = evolve_nsga2(ea, pop)
     % Mutation
     for i = 1:ea.childpop.size
         x = get_x(childpop, i);
-        x = mutation_POLY(ea.object, x);
+        x = mutation_POLY(ea, x);
         childpop = set_x(childpop, i, x);
     end
 end

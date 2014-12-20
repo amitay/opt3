@@ -1,7 +1,7 @@
 %% Initialize population
 function [pop] = init(pop, varargin)
 	% Initialize population with object instances
-	pop.x = cell(pop.size,1);
+	pop.x = zeros(pop.size, pop.nx);	% Variables
 	pop.f = zeros(pop.size, pop.nf);	% Objectives
 	pop.g = zeros(pop.size, pop.ng);	% Constraints
 	pop.feas = zeros(pop.size, 1);		% Solution feasibility

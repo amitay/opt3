@@ -31,6 +31,10 @@ function summary(pop, varargin)
 		write(logger, '\tNon-Dominated: %d\n', length(nd));
 	end
 	write(logger, '\tFeasible: %d\n', sum(pop.feas));
-	write(logger, '\tDesign:');
-	write(logger, '%s\n', str(pop.object, pop.x{id}));
+	mesg = '';
+	for i = 1:pop.nx
+		tmp = sprintf(' %g', pop.x(id,i));
+		mesg = strcat(mesg, tmp);
+	end
+	write(logger, '\tDesign: [%s ]\n', mesg);
 end
