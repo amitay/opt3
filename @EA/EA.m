@@ -1,7 +1,23 @@
-%% Evolutionary Algorithm framework
 function [ea] = EA(problem, algo, varargin)
-%EA(problem, algo) - Create EA instance for a given problem
+% EA(problem, algo) creates an EA instance for a given problem
 %
+%Arguments
+%
+% problem - Optimization problem definition
+% algo    - Optimization algorithm (e.g. NSGA2, IDEA)
+%
+%Example: Run NSGA-II for problem g1
+%
+% ea = EA('g1', 'NSGA2');
+% ea = run(ea);
+%
+%Parameters
+%
+% generations  - Number of generations
+% seed         - Random seed
+% max_fn_evals - Maximum number of function evaluations
+% batch_mode   - Batch mode (0 - disable, 1 - no graphs, 2 - no log)
+% use_cache    - Enable caching of evaluations
 %
 
 	% Problem related info
