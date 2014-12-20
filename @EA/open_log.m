@@ -10,7 +10,7 @@ function ea = open_log(ea, append_flag)
 	prefix = sprintf('%s-%s', ea.prob_name, ea.algo_name);
 
 	% Initialize Logger
-	ea.logger = Logger(prefix, append_flag);
+	ea.logger = Logger(prefix, ea.param.batch_mode, append_flag);
 
 	% Open data dump files
 	filename = sprintf('%s-all.dat', prefix);
