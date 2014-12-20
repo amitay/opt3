@@ -23,7 +23,7 @@ function [ea, x, f, g] = eval_cache(ea, x, repr_flag, state, varargin)
 			g = yy(ea.prob.nx+ea.prob.nf+1:end);
 		else
 			xx_orig = xx;
-			[f, g, xx] = eval_true(ea, x, state, f_mask, g_mask);
+			[f, g, xx] = eval_true(ea, xx_orig, state, f_mask, g_mask);
 			ea.cache = insert(ea.cache, xx_orig, [xx,f,g]);
 		end
 	else
