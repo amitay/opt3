@@ -4,29 +4,17 @@ function [ea, childpop] = evolve_nsga2(ea, pop)
     childpop = Population(pop, N);
     a1 = randperm(N);
     a2 = randperm(N);
+    a = reshape([a1, a2], 2, N)';
 
-    for i = 1:4:N
-        i1 = tournament(pop, a1(i), a1(i+1));
-        i2 = tournament(pop, a1(i+2), a1(i+3));
-        p1 = get_x(pop, i1);
-        p2 = get_x(pop, i2);
-        [c1, c2] = crossover_SBX(ea, p1, p2);
-        childpop = set_x(childpop, i, c1);
-        childpop = set_x(childpop, i+1, c2);
+    w = tournament(pop, a(:,1), a(:,2));
+    p1 = get_x(pop, w(1:2:end));
+    p2 = get_x(pop, w(2:2:end));
 
-        i1 = tournament(pop, a2(i), a2(i+1));
-        i2 = tournament(pop, a2(i+2), a2(i+3));
-        p1 = get_x(pop, i1);
-        p2 = get_x(pop, i2);
-        [c1, c2] = crossover_SBX(ea, p1, p2);
-        childpop = set_x(childpop, i+2, c1);
-        childpop = set_x(childpop, i+3, c2);
-    end
+    [c1, c2] = crossover_SBX(ea, p1, p2);
+    childpop = set_x(childpop, (1:N/2)', c1);
+    childpop = set_x(childpop, (N/2+1:N)', c2);
 
-    % Mutation
-    for i = 1:ea.childpop.size
-        x = get_x(childpop, i);
-        x = mutation_POLY(ea, x);
-        childpop = set_x(childpop, i, x);
-    end
+    x = get_x(childpop, (1:N)');
+    x = mutation_POLY(ea, x);
+    childpop = set_x(childpop, (1:N)', x);
 end
