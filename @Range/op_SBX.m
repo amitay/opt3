@@ -26,8 +26,8 @@ end
 function [y1, y2] = SBX(x1, x2, x_min, x_max, eta)
 	% Make sure the variables are not the same
 	if abs(x1-x2) > 1.e-6
-	% make sure x1 < x2
-   	 if x2 < x1, tmp = x1; x1 = x2; x2 = tmp; end
+        % make sure x1 < x2
+        if x2 < x1, tmp = x1; x1 = x2; x2 = tmp; end
 
 		r = rand(1);
 		beta = 1 + (2 * (x1-x_min) / (x2-x1));
